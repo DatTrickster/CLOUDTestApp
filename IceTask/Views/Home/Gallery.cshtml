@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Gallery";
+}
+
+<h1 class="display-4">Gallery</h1>
+
+@if (Model.Count == 0)
+{
+    <p>No files uploaded yet.</p>
+}
+else
+{
+    <div>
+        <h2>Uploaded Files</h2>
+        <ul>
+          
+            @foreach (var file in Model)
+            {
+                <li>
+                    <span>@file</span>
+                    <form method="post" action="@Url.Action("DeleteFile", "Home")">
+                        <input type="hidden" name="fileName" value="@file" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+<a href="@Url.Action("Index", "Home")">Back to Home</a>

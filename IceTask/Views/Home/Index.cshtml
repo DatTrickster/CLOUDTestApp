@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script>
+    function validateFileSize() {
+        var fileInput = document.getElementById('file');
+        if (fileInput.files.length > 0) {
+            var fileSize = fileInput.files[0].size / 1024 / 1024; // Size in MB
+            if (fileSize > 20) {
+                alert('File size exceeds 20 MB. Please select a smaller file.');
+                document.getElementById('file').value = ''; // Clear the file input
+                document.getElementById('uploadButton').disabled = true; // Disable the upload button
+            } else {
+                document.getElementById('uploadButton').disabled = false; // Enable the upload button
+            }
+        }
+    }
+</script>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <!-- Form for uploading images -->
+    <form method="post" enctype="multipart/form-data" action="@Url.Action("UploadImage", "Home")">
+        <div class="form-group">
+            <label for="file">Choose Image:</label>
+            <input type="file" class="form-control-file" id="file" name="file" onchange="validateFileSize()">
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
+    </form>
+
+
+    <!-- Display uploaded image -->
+    @if (TempData["ImagePath"] != null)
+    {
+        <div style="margin-top: 20px;">
+            <h2>Uploaded Image</h2>
+            <img src="@TempData["ImagePath"]" alt="Uploaded Image" class="img-thumbnail" style="max-width: 500px;">
+        </div>
+    }
+
+    <!-- Display success or error messages -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success" role="alert" style="margin-top: 20px;">
+            @TempData["Message"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
+            @TempData["Error"]
+        </div>
+    }
+</div>
